@@ -9,11 +9,12 @@
 
 ---
 
-## 📦 Каталог плагинов (15 плагинов)
+## 📦 Каталог плагинов (16 плагинов)
 
 | Плагин | Скилл | Назначение |
 | :--- | :--- | :--- |
 | **`token-optimizer`** | `token-efficiency-craft` | **Экономия токенов и сжатие контекста:** фильтрация вывода терминала (logcat, git diff, grep), чтение файлов по узким диапазонам строк (`StartLine`/`EndLine`), хирургические точечные правки (`replace_file_content`), маскирование наблюдений и устранение разговорного шума. |
+| **`freellm-manager`** | `freellm-proxy` | **Шлюз бесплатных LLM-моделей (FreeLLMAPI):** управление локальным прокси-сервером на 87 провайдеров и 328+ бесплатных моделей через CLI `freellm` (start/stop/restart/status/key/test) и OpenAI-совместимый эндпоинт `http://127.0.0.1:3001/v1`. |
 | **`python-artisan`** | `python-artisan` | Архитектура автономных Python CLI-утилит под Android userspace: zero-dependency шаблоны, управление путями и шебангами (`agy-fix-paths`), интеграция с Google AI Studio / Gemini API (`google_ai.json`) и обход ограничений `noexec`. |
 | **`kotlin-compose`** | `kotlin-compose-expert` | Стандарты современной разработки под Android: Kotlin Coroutines, Jetpack Compose UDF, `StateFlow`, оптимизация рекомпозиций (`@Immutable`, `@Stable`, Lazy-ключи), Material 3 и Edge-to-Edge для Android 16 (SDK 36). |
 | **`android-adb-toolkit`** | `android-adb-toolkit` | Разработка и отладка Android: фильтрация logcat (крэши, fatal), управление APK (`pm install -r`), активности (`am start`), память, батарея и доступ к защищенным директориям через нативный ADB loopback. |
@@ -28,6 +29,29 @@
 | **`google-antigravity`** | `google-antigravity` | Стандарты планирования Google Antigravity (`implementation_plan.md`, `walkthrough.md`) и дизайн-система Google AI Studio (палитры, микроанимации, стекломорфизм). |
 | **`karpathy-skills`** | `karpathy-guidelines` | Принципы Андрея Карпатого: хирургические правки, минимализм, отказ от лишних спекулятивных абстракций и верификация кода тестами. |
 | **`agent-reach`** | `agent-reach` | Чтение и поиск по открытым данным соцсетей (GitHub, Reddit, Twitter/X, Bilibili, YouTube) без API-ключей. |
+
+---
+
+## ⚡ FreeLLMAPI (Локальный шлюз бесплатных моделей)
+
+FreeLLMAPI агрегирует 87 провайдеров и предоставляет 328+ бесплатных моделей через единый локальный OpenAI-совместимый интерфейс.
+
+### Управление через CLI `freellm`
+```bash
+freellm status   # Проверка статуса, порта и PID сервиса
+freellm start    # Запуск фонового демона FreeLLMAPI
+freellm stop     # Остановка сервиса
+freellm restart  # Перезапуск сервиса
+freellm key      # Просмотр активного единого API-ключа
+freellm logs     # Просмотр последних логов сервера
+freellm test     # Экспресс-тест эндпоинта /v1/chat/completions
+```
+
+### Настройки подключения
+- **Base URL:** `http://127.0.0.1:3001/v1`
+- **Port:** `3001` (изолирован от системных портов Antigravity `45157`/`45158`)
+- **Формат запросов:** Стандартный OpenAI Chat Completions API (`POST /v1/chat/completions`)
+- **Популярные модели:** `auto`, `fusion`, `glm-5.3`, `qwen3.8-max`, `deepseek-chat`, `gpt-4o-mini`
 
 ---
 

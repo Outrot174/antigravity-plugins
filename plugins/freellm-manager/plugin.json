@@ -1,0 +1,8 @@
+{
+  "name": "freellm-manager",
+  "description": "Unified OpenAI-compatible proxy gateway for 87+ free LLM providers, 1313 model endpoints, automatic fallback routing, and unlimited coding agent completions.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Outrot174"
+  }
+}
