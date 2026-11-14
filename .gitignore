@@ -1,0 +1,15 @@
+# OS and device files
+.DS_Store
+Thumbs.db
+
+# Node and Python artifacts
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Sensitive files
+*.env
+*.key
+*.pem

@@ -1,0 +1,8 @@
+{
+  "name": "git-workflow",
+  "description": "Conventional Commits, Android safe-directory management, tag releases, and clean Git workflows for Antigravity AGY v2.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Outrot174"
+  }
+}

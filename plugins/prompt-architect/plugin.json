@@ -1,0 +1,8 @@
+{
+  "name": "prompt-architect",
+  "description": "Design, evaluate, and optimize system prompts, meta-prompts, and structured agent instructions for Antigravity AGY v2.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Outrot174"
+  }
+}

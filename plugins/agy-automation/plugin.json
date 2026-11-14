@@ -1,0 +1,8 @@
+{
+  "name": "agy-automation",
+  "description": "Analyze codebases and recommend tailored Antigravity (AGY v2) automations: skills, rules, hooks, MCP servers, and background daemons.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Outrot174"
+  }
+}

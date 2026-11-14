@@ -1,0 +1,8 @@
+{
+  "name": "threejs-3d-craft",
+  "description": "Procedural 3D model generation (OBJ, STL, GLTF) and interactive Three.js WebGL scenes for Antigravity AGY v2.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Outrot174"
+  }
+}
