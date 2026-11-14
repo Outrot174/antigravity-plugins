@@ -126,7 +126,7 @@ freellm test     # Экспресс-тест эндпоинта /v1/chat/complet
 - 🛡️ `qa-security-auditor` — Read-Only аудит безопасности OWASP, утечек ключей и тестов
 - 📝 `docs-historian` — документация, чейнджлоги и релизы на GitHub
 - 🌐 `i18n-localizer` — русская локализация и AST-словари (`antigravity-ru`)
-- 🎮 `game-prototyper` — быстрое прототипирование игр HTML5/Canvas (`TrapMario`)
+- 🎮 `game-developer` — мультиплатформенный геймдев (Kotlin SurfaceView/OpenGL, HTML5 Canvas/WebGL, физика)
 - 📊 `graphics-engine-specialist` — математика и оптимизация отрисовки графиков (`grafik`)
 - 🐧 `android-env-architect` — управление средой Android userspace, `pkg`, ARM64, `noexec`
 
