@@ -18,11 +18,27 @@
 | **`python-web-developer`** | Инженер Python CLI и системных сервисов | Создание автономных zero-dependency CLI, фоновых демонов `agy-daemon`, легковесных веб-модулей на JS. | Терминал (`python`, `bash`), редактор кода | `/storage/emulated/0/Antigravity/программы/<проект>/` |
 | **`qa-security-auditor`** | Инспектор безопасности и качества кода | **Read-Only аудит:** проверка OWASP Top 10, поиск утечек токенов/ключей, инспекция `AndroidManifest.xml`, контроль принципов Карпатого. | Read-Only (статический анализ, тесты) | — (Аналитические отчеты) |
 | **`docs-historian`** | Технический писатель и релиз-менеджер | Синхронизация README модулей, чейнджлоги (CHANGELOG.md), Conventional Commits, релизы через GitHub API. | MCP `github-mcp-server`, Markdown | Репозитории проектов |
+| **`i18n-localizer`** | Специалист по локализации (`antigravity-ru`) | Поддержание словарей перевода `i18n_ru.js` (1600+ фраз), валидация AST-патчей в `main.js`, терминологический контроль. | Редакторы текста, AST-линтеры | Репозиторий `antigravity-ru` |
 | **`game-developer`** | Мультиплатформенный геймдев (Kotlin, HTML5, OpenGL) | Разработка 2D/3D игр: нативные движки на Kotlin (SurfaceView, Custom Canvas, OpenGL ES 3.0), браузерные игры на HTML5 Canvas/WebGL, физика, мобильное управление и Web Audio. | Kotlin, HTML5, Canvas, OpenGL ES, MCP `android-adb` | `/storage/emulated/0/Antigravity/программы/<игра>/` |
 | **`graphics-engine-specialist`** | Инженер графических движков (`grafik`) | Математика графиков (сглаживание Безье, масштабирование, графические примитивы), оптимизация рендера под 60/120 FPS. | Kotlin, Skia, Compose DrawScope | `/storage/emulated/0/Antigravity/программы/grafik/` |
 | **`android-env-architect`** | Системный архитектор среды Android Linux | Управление пакетами `pkg`, компиляция под ARM64, обход ограничений `noexec`, настройка ADB loopback и демонов `agy-daemon`. | `pkg`, `agy-daemon`, loopback ADB | Системные директории `$PREFIX` |
 
 ---
+
+## 🛑 Правило строгого разграничения сфер (Domain Boundaries)
+
+Во избежание конфликтов между разработчиками действует железное правило изоляции:
+
+1. **`game-developer` НЕ вмешивается в работу `android-developer`:**
+   - Сфера геймдева — это исключительно игры, игровые циклы (Game Loops), физика (AABB/SAT), спрайты, SurfaceView, Custom Canvas, OpenGL ES и звуки Web Audio/SoundPool.
+   - Он **не трогает** бизнес-архитектуру стандартных Android-приложений (Jetpack Compose ViewModels, Room DB, навигацию и UI экраны общего назначения).
+
+2. **`android-developer` НЕ вмешивается в работу `game-developer`:**
+   - Сфера Android-разработчика — классическая архитектура приложений Android (MVI/MVVM, StateFlow, Coroutines, Material 3).
+   - Он **не лезет** в исходный код игровых движков, анимаций спрайтов и коллизий.
+
+3. **Совместная работа:**
+   - Допускается **только** по прямому запросу пользователя, если игра встраивается как отдельный модуль (компонент) внутрь классического Compose/Android-приложения. Во всех остальных случаях агенты работают в строго изолированных директориях.
 
 ## 🚀 Как вызывать субагентов
 
