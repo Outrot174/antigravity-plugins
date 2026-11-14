@@ -1,8 +1,0 @@
-{
-  "name": "media-toolkit",
-  "description": "Native FFmpeg audio, video, GIF, and keyframe processing toolkit for Antigravity AGY v2 on Android.",
-  "version": "1.0.0",
-  "author": {
-    "name": "Outrot174"
-  }
-}
