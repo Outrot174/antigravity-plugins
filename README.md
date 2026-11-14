@@ -111,6 +111,27 @@ freellm test     # Экспресс-тест эндпоинта /v1/chat/complet
 
 ---
 
+## 🤖 Специализированный штат субагентов (12 агентов)
+
+В репозитории спроектирована и задокументирована команда из 12 узкоспециализированных ИИ-субагентов, работающих по принципу единственной ответственности (SRP) в изолированных контекстных окнах.
+
+Подробное описание ролей, системных промптов и параметров вызова: [Каталог субагентов](agents/README.md).
+
+- 🎬 `video-creator` — генерация видео (Google Veo 3.1 & Higgsfield)
+- 🎨 `image-artist` — генерация 1K/2K/4K графики (Google Nano Banana & Gemini Image)
+- 🧠 `prompt-architect` — проектирование XML-промптов и ролевых шаблонов
+- 📐 `3d-craft-engineer` — процедурные 3D-сетки (OBJ, STL, `numpy-stl`, WebGL)
+- 📱 `android-developer` — архитектура Kotlin Coroutines, Jetpack Compose, Room, ADB
+- 🐍 `python-web-developer` — автономные CLI-утилиты, демоны `agy-daemon`
+- 🛡️ `qa-security-auditor` — Read-Only аудит безопасности OWASP, утечек ключей и тестов
+- 📝 `docs-historian` — документация, чейнджлоги и релизы на GitHub
+- 🌐 `i18n-localizer` — русская локализация и AST-словари (`antigravity-ru`)
+- 🎮 `game-prototyper` — быстрое прототипирование игр HTML5/Canvas (`TrapMario`)
+- 📊 `graphics-engine-specialist` — математика и оптимизация отрисовки графиков (`grafik`)
+- 🐧 `android-env-architect` — управление средой Android userspace, `pkg`, ARM64, `noexec`
+
+---
+
 ## 📱 Стандарты изоляции хранилища Android
 
 Все создаваемые агентом данные сохраняются строго в изолированные разделы:
