@@ -9,10 +9,11 @@
 
 ---
 
-## 📦 Каталог плагинов (14 плагинов)
+## 📦 Каталог плагинов (15 плагинов)
 
 | Плагин | Скилл | Назначение |
 | :--- | :--- | :--- |
+| **`token-optimizer`** | `token-efficiency-craft` | **Экономия токенов и сжатие контекста:** фильтрация вывода терминала (logcat, git diff, grep), чтение файлов по узким диапазонам строк (`StartLine`/`EndLine`), хирургические точечные правки (`replace_file_content`), маскирование наблюдений и устранение разговорного шума. |
 | **`python-artisan`** | `python-artisan` | Архитектура автономных Python CLI-утилит под Android userspace: zero-dependency шаблоны, управление путями и шебангами (`agy-fix-paths`), интеграция с Google AI Studio / Gemini API (`google_ai.json`) и обход ограничений `noexec`. |
 | **`kotlin-compose`** | `kotlin-compose-expert` | Стандарты современной разработки под Android: Kotlin Coroutines, Jetpack Compose UDF, `StateFlow`, оптимизация рекомпозиций (`@Immutable`, `@Stable`, Lazy-ключи), Material 3 и Edge-to-Edge для Android 16 (SDK 36). |
 | **`android-adb-toolkit`** | `android-adb-toolkit` | Разработка и отладка Android: фильтрация logcat (крэши, fatal), управление APK (`pm install -r`), активности (`am start`), память, батарея и доступ к защищенным директориям через нативный ADB loopback. |
