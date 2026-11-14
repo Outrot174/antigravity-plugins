@@ -52,64 +52,45 @@ with open(
     f.write(f"f {' '.join(map(str, face))}\n")
 ```
 
-### STL Format (Binary / ASCII)
+### STL Format (Binary / ASCII) & Mesh Diagnostics
 Ideal for 3D printing and CAD geometry:
 - Export to: `/storage/emulated/0/Antigravity/3д модели/<model_name>.stl`
+- Physical diagnostics via native `numpy-stl`:
+```python
+from stl import mesh
+
+stl_model = mesh.Mesh.from_file(
+    "/storage/emulated/0/Antigravity/3д модели/model.stl"
+)
+volume, cog, inertia = stl_model.get_mass_properties()
+min_b, max_b = stl_model.min_, stl_model.max_
+print(
+    f"Triangles: {len(stl_model.vectors)}, Volume: {volume:.2f} mm³, Bounds:"
+    f" {min_b} to {max_b}"
+)
+```
 
 ---
 
-## 2. Interactive Three.js Generative UI
+## 2. Interactive 3D Generative UI (CSP-Safe)
 
-When visualizing 3D models for user inspection inline in the chat, generate self-contained HTML/JS widgets rendering Three.js via CDN:
+> [!IMPORTANT]
+> External CDNs (cdnjs, jsdelivr, unpkg) are blocked by the Antigravity iframe Content Security Policy (CSP).
+> When building interactive 3D HTML artifacts for user inspection, prefer **zero-dependency native WebGL** with embedded vertex/fragment shaders or inline scripts to guarantee 100% offline, CSP-safe rendering:
 
+- Standard self-contained pattern:
 ```html
-<div id="three-container" style="width: 100%; height: 400px; border-radius: 12px; overflow: hidden; background: #0f1117;"></div>
-<script type="module">
-  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-  import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-
-  const container = document.getElementById('three-container');
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a0c10);
-
-  const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.set(3, 3, 5);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  container.appendChild(renderer.domElement);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-  const dirLight = new THREE.DirectionalLight(0x00d2ff, 1.2);
-  dirLight.position.set(5, 10, 7);
-  scene.add(dirLight);
-
-  // Geometry
-  const geometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 32);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x6366f1,
-    metalness: 0.8,
-    roughness: 0.2
-  });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-
-  function animate() {
-    requestAnimationFrame(animate);
-    mesh.rotation.y += 0.01;
-    controls.update();
-    renderer.render(scene, camera);
-  }
-  animate();
+<canvas id="glcanvas" style="width:100%; height:100%;"></canvas>
+<script>
+  const canvas = document.getElementById('glcanvas');
+  const gl = canvas.getContext('webgl', { antialias: true });
+  // Native vertex & fragment shaders with Blinn-Phong lighting
+  // Pure JS perspective matrix & touch/mouse orbit controls
 </script>
 ```
 
 ## Best Practices
-- **Mobile Performance**: Keep polygon counts balanced (under 50k faces for real-time mobile WebGL rendering on Snapdragon 8 Elite).
-- **Physical PBR**: Prefer `MeshStandardMaterial` or `MeshPhysicalMaterial` with subtle roughness and metalness.
+- **Mobile Performance**: Keep polygon counts balanced (under 50k faces for 60/120 FPS mobile WebGL rendering on Adreno 830 / Snapdragon 8 Elite).
+- **CSP Compliance**: Never rely on unwhitelisted external CDNs for 3D scripts in HTML artifacts.
+- **Diagnostics First**: Always verify STL meshes with `numpy-stl` before recommending for 3D printing.
+
