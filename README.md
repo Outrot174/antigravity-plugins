@@ -5,14 +5,15 @@
 Все плагины в этом репозитории спроектированы под реальную среду Android-устройства (POCO F7 Ultra, Snapdragon 8 Elite, HyperOS 3.0):
 - ❌ **Без Docker и bwrap:** 100% совместимость с native Android userspace.
 - ❌ **Без спама в контекст:** удалены принудительные токсичные правила и раздутые prompt-файлы.
-- ✅ **Нативная интеграция:** поддержка elevated ADB (`uid=2000`), фонового планировщика `agy-daemon`, Three.js WebGL, FFmpeg, SQLite, Jetpack Compose и правил строгой изоляции хранилища.
+- ✅ **Нативная интеграция:** поддержка elevated ADB (`uid=2000`), фонового планировщика `agy-daemon`, Three.js WebGL, FFmpeg, SQLite, Jetpack Compose, Python CLI и долговременной памяти MCP.
 
 ---
 
-## 📦 Каталог плагинов
+## 📦 Каталог плагинов (14 плагинов)
 
 | Плагин | Скилл | Назначение |
 | :--- | :--- | :--- |
+| **`python-artisan`** | `python-artisan` | Архитектура автономных Python CLI-утилит под Android userspace: zero-dependency шаблоны, управление путями и шебангами (`agy-fix-paths`), интеграция с Google AI Studio / Gemini API (`google_ai.json`) и обход ограничений `noexec`. |
 | **`kotlin-compose`** | `kotlin-compose-expert` | Стандарты современной разработки под Android: Kotlin Coroutines, Jetpack Compose UDF, `StateFlow`, оптимизация рекомпозиций (`@Immutable`, `@Stable`, Lazy-ключи), Material 3 и Edge-to-Edge для Android 16 (SDK 36). |
 | **`android-adb-toolkit`** | `android-adb-toolkit` | Разработка и отладка Android: фильтрация logcat (крэши, fatal), управление APK (`pm install -r`), активности (`am start`), память, батарея и доступ к защищенным директориям через нативный ADB loopback. |
 | **`media-toolkit`** | `ffmpeg-media-craft` | Процессинг аудио и видео через нативный `$PREFIX/bin/ffmpeg`: сжатие H.264, мгновенная нарезка без перекодирования (`-c copy`), извлечение кадров/аудио и создание высококачественных палитровых GIF. |
@@ -29,9 +30,9 @@
 
 ---
 
-## 🔌 Нативные MCP-коннекторы (без Docker)
+## 🔌 Нативные MCP-коннекторы (Node.js npx, без Docker)
 
-Файл конфигурации: `~/.gemini/config/mcp_config.json` (готовый шаблон в `config-templates/mcp_config.json`).
+Конфигурационный файл: `~/.gemini/config/mcp_config.json` (шаблон в `config-templates/mcp_config.json`).
 Все серверы запускаются нативно через `npx` под управлением Node.js:
 ```json
 {
@@ -46,6 +47,10 @@
     "filesystem-mcp-server": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/storage/emulated/0/Antigravity"]
+    },
+    "memory-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
     }
   }
 }

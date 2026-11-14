@@ -23,6 +23,13 @@
         "@modelcontextprotocol/server-filesystem",
         "/storage/emulated/0/Antigravity"
       ]
+    },
+    "memory-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
     }
   }
 }
