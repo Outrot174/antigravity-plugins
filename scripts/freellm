@@ -1,0 +1,109 @@
+#!/data/user/0/com.agy/files/usr/bin/bash
+# FreeLLMAPI Management CLI for Antigravity AGY v2 on Android
+
+SERVICE_DIR="/data/user/0/com.agy/files/services/freellmapi/server"
+LOG_DIR="/data/user/0/com.agy/files/.gemini/logs"
+LOG_FILE="$LOG_DIR/freellmapi.log"
+PID_FILE="/data/user/0/com.agy/files/.gemini/freellmapi.pid"
+API_URL="http://127.0.0.1:3001"
+UNIFIED_KEY="freellmapi-14c821e76ce35574e0fc698fde6da7b8269146b653d355fb"
+
+mkdir -p "$LOG_DIR"
+
+is_running() {
+    if [ -f "$PID_FILE" ]; then
+        PID=$(cat "$PID_FILE" 2>/dev/null)
+        if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+case "$1" in
+    start)
+        if is_running; then
+            echo "[WARN] FreeLLMAPI is already running (PID: $(cat $PID_FILE))"
+            exit 0
+        fi
+        echo "[INFO] Starting FreeLLMAPI proxy server on port 3001..."
+        cd "$SERVICE_DIR" || exit 1
+        setsid node ../node_modules/tsx/dist/cli.mjs src/index.ts > "$LOG_FILE" 2>&1 &
+        SERVER_PID=$!
+        echo "$SERVER_PID" > "$PID_FILE"
+        sleep 2
+        if kill -0 "$SERVER_PID" 2>/dev/null; then
+            echo "[OK] FreeLLMAPI started successfully (PID: $SERVER_PID)"
+            echo "     API Endpoint: $API_URL/v1"
+            echo "     Unified Key:  $UNIFIED_KEY"
+        else
+            echo "[ERROR] Failed to start server. Check logs: $LOG_FILE"
+            cat "$LOG_FILE" | tail -n 20
+            exit 1
+        fi
+        ;;
+
+    stop)
+        if is_running; then
+            PID=$(cat "$PID_FILE")
+            echo "[INFO] Stopping FreeLLMAPI (PID: $PID)..."
+            kill "$PID" 2>/dev/null
+            sleep 1
+            if kill -0 "$PID" 2>/dev/null; then
+                kill -9 "$PID" 2>/dev/null
+            fi
+            rm -f "$PID_FILE"
+            echo "[OK] FreeLLMAPI stopped."
+        else
+            echo "[INFO] FreeLLMAPI is not running."
+            rm -f "$PID_FILE"
+        fi
+        ;;
+
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+
+    status)
+        if is_running; then
+            PID=$(cat "$PID_FILE")
+            echo "[OK] FreeLLMAPI is running (PID: $PID)"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $UNIFIED_KEY" "$API_URL/v1/models" 2>/dev/null)
+            if [ "$HTTP_CODE" = "200" ]; then
+                echo "     Health: Healthy (HTTP 200)"
+                echo "     Endpoint: $API_URL/v1"
+            else
+                echo "     Health: Responding with HTTP $HTTP_CODE"
+            fi
+        else
+            echo "[STOPPED] FreeLLMAPI is not running."
+        fi
+        ;;
+
+    key)
+        echo "$UNIFIED_KEY"
+        ;;
+
+    logs)
+        tail -n 50 "$LOG_FILE" 2>/dev/null || echo "No logs found."
+        ;;
+
+    test)
+        echo "[INFO] Testing FreeLLMAPI chat completion..."
+        curl -s -X POST "$API_URL/v1/chat/completions" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $UNIFIED_KEY" \
+            -d '{
+                "model": "auto",
+                "messages": [{"role": "user", "content": "Reply with only word PONG"}],
+                "max_tokens": 10
+            }' | python -m json.tool 2>/dev/null || echo "Request failed."
+        ;;
+
+    *)
+        echo "Usage: freellm {start|stop|restart|status|key|logs|test}"
+        exit 1
+        ;;
+esac
