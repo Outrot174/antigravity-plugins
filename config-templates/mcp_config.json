@@ -15,6 +15,14 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
       }
+    },
+    "filesystem-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/storage/emulated/0/Antigravity"
+      ]
     }
   }
 }
