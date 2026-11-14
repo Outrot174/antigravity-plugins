@@ -55,13 +55,33 @@ freellm test     # Экспресс-тест эндпоинта /v1/chat/complet
 
 ---
 
-## 🔌 Нативные MCP-коннекторы (Node.js npx, без Docker)
+## 🔌 Нативные и облачные MCP-коннекторы (Без Docker)
 
 Конфигурационный файл: `~/.gemini/config/mcp_config.json` (шаблон в `config-templates/mcp_config.json`).
-Все серверы запускаются нативно через `npx` под управлением Node.js:
+Оптимальный набор из 7 серверов (строго в рамках рекомендуемого лимита 4–7 серверов для экономии токенов):
+
+| Сервер | Тип / Среда | Назначение |
+| :--- | :--- | :--- |
+| **`sequential-thinking`** | Node.js (локально) | Динамические цепочки логических рассуждений (Dynamic Thought Chains), перепроверка архитектуры и пошаговый поиск багов. |
+| **`context7`** | HTTPS / Remote SSE | Подгрузка актуальной документации библиотек в реальном времени (без устаревших методов и галлюцинаций API). |
+| **`android-adb`** | Python 3 (локально) | Моментальная диагностика крэшей Android (`adb_crash_analyzer`), управление пакетами и системные метрики устройства. |
+| **`github-mcp-server`** | Node.js (`npx`) | Управление репозиториями, коммитами, PR и issues через GitHub REST/GraphQL API. |
+| **`memory-mcp-server`** | Node.js (`npx`) | Граф долговременной памяти и сущностей между сессиями диалога. |
+| **`filesystem-mcp-server`** | Node.js (`npx`) | Безопасная работа с файловой структурой `/storage/emulated/0/Antigravity`. |
+| **`higgsfield`** | HTTPS / Remote SSE | Облачный коннектор для генерации медиа и видео. |
+
 ```json
 {
   "mcpServers": {
+    "higgsfield": {
+      "url": "https://mcp.higgsfield.ai/mcp",
+      "headers": {
+        "Authorization": "Key YOUR_HIGGSFIELD_KEY_HERE"
+      }
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
     "github-mcp-server": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
@@ -69,13 +89,21 @@ freellm test     # Экспресс-тест эндпоинта /v1/chat/complet
         "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
       }
     },
+    "memory-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
     "filesystem-mcp-server": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "/storage/emulated/0/Antigravity"]
     },
-    "memory-mcp-server": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    "sequential-thinking": {
+      "command": "node",
+      "args": ["/data/user/0/com.agy/files/usr/bin/mcp-server-sequential-thinking"]
+    },
+    "android-adb": {
+      "command": "python",
+      "args": ["/data/user/0/com.agy/files/services/adb-mcp/server.py"]
     }
   }
 }
